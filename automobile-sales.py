@@ -73,11 +73,11 @@ def update_input_container(selected_statistics):
 # Define the callback function to update the input container based on the selected statistics
 @app.callback(
     Output(component_id='output-container', component_property='children'),
-    [Input(component_id='select-year', component_property='value'), Input(component_id='dropdown-statistics', component_property='value')])
+    [Input(component_id='dropdown-statistics', component_property='value'), Input(component_id='select-year', component_property='value')])
 
 
-def update_output_container(dropdown_options, input_year):
-    if dropdown_options == 'Recession Period Statistics':
+def update_output_container(selected-statistics, input_year):
+    if selected-statistics == 'Recession Period Statistics':
         # Filter the data for recession periods
         recession_data = data[data['Recession'] == 1]
         
@@ -102,15 +102,15 @@ def update_output_container(dropdown_options, input_year):
         exp_rec= recession_data.groupby(['Vehicle_Type'])['Advertising_Expenditure'].sum().reset_index
         R_chart3 = dcc.Graph(
                              figure=px.pie(exp_rec, 
-                                           values='pop', 
+                                           values='Advertising_Expenditure', 
                                            names='Vehicle_Type', 
                                            title='Total Expenditure Share by Vehicle Type during Recessions'
                                            )
                             )
 
 # Plot 4 bar chart for the effect of unemployment rate on vehicle type and sales
-        recession_data = data[data['Recession'==1]]
-        R_chart4 = dcc.Graph(figure=px.histogram(recession_data), x='unemployment_rate', hue='Vehicle_Type', title='Effect of Unemployment Rate on Vehicle Type and Sales')
+        #recession_data = data[data['Recession'==1]]
+        R_chart4 = dcc.Graph(figure=px.bar(recession_data), x='unemployment_rate', y='Vehicle_Type', title='Effect of Unemployment Rate on Vehicle Type and Sales')
 
         return [
             html.Div(className='chart-item', children=[html.Div(children=R_chart1),html.Div(children=R_chart2)],style={'display': 'flex'}),
@@ -155,4 +155,3 @@ def update_output_container(dropdown_options, input_year):
 # Run the Dash app
 if __name__ == '__main__':
     app.run_server(debug=True)
-
